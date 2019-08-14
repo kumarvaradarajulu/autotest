@@ -17,9 +17,37 @@ coverage_config = """
 show_missing = True
 """
 
+new_class = """
+class Test{classname}(unittest.TestCase):
+    \"\"\" Test  cases for {classname} \"\"\"
+    def setUp(self):
+        pass
+"""
+
+
+new_function = """
+class Test{functionname_camel}(unittest.TestCase):
+    \"\"\" Test  cases for {functionname} \"\"\"
+    def setUp(self):
+        pass
+    
+    def test_{functionname}(self):
+        pass
+"""
+
+
+new_method = """
+def test_{methodname}(self):
+    pass
+"""
+
+
 template_types = {
     "new_test_class": new_test_class_template,
-    "coverage_config": coverage_config
+    "coverage_config": coverage_config,
+    "new_class": new_class,
+    "new_method": new_method,
+    "new_function": new_function,
 }
 
 
@@ -54,3 +82,7 @@ class TemplateCreator(object):
     def create_coverage_config(self):
         with open('.coveragerc', 'w') as f:
             f.write(template_types['coverage_config'])
+
+
+def create_template(template_type, **kwargs):
+    return ast.parse(template_types[template_type].format(**kwargs))

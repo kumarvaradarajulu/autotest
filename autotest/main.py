@@ -3,8 +3,8 @@ import logging
 import sys
 
 import six
-from autotest import __VERSION__
-from autotest.control import Controller
+#import autotest.__VERSION__
+from control import Controller
 
 logging.basicConfig(level=logging.ERROR)
 log = logging.getLogger('')
@@ -20,7 +20,6 @@ VERBOSITY_MAPPING = {
 parser = argparse.ArgumentParser(prog='AutoTest')
 
 parser.add_argument('module_package_name',
-                    dest='module_package_name',
                     help='Module name to be analyzed and written tests for')
 
 parser.add_argument('--vcs',
@@ -34,7 +33,7 @@ parser.add_argument('-v', '--verbose',
                     default=0,
                     help='Control verbosity level. Can be supplied multiple times to increase verbosity level',)
 
-parser.add_argument('-V', '--version', action='version', version='%(prog)s v' + __VERSION__,
+parser.add_argument('-V', '--version', action='version', version='%(prog)s v' + '1.0a',
                     help='Displays AutoTest version number',)
 
 
@@ -44,7 +43,7 @@ def main():
     log.debug("Verbosity Level={}".format(args.verbose))
 
     try:
-        Controller(argv=args).process()
+        Controller(options=args).process()
     except (EnvironmentError, NotImplementedError, RuntimeError) as e:
         sys.stdout.write(six.text_type(e.message) + '\n')
         sys.exit(False)
